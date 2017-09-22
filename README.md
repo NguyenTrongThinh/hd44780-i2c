@@ -24,13 +24,13 @@ Device attributes exported via sysfs (`/sys/class/hd44780/<device_name>`):
 * `cursor_blink` - controls cursor blink. Possible values: `0`, `1`
 * `cursor_display` - displays or hides cursor. Possible values: `0`, `1`
 ### Device tree modification
-&i2c0 {
+`&i2c0 {
 	status = "okay";
 	hd44780@27 {
 			compatible = "hitachi,hd44780";
 			reg = <0x27>;
 	};
-};
+};`
 ### Usage
 1. Insert kernel module: `insmod hd44780.ko`.
 2. Let the I2C adapter know that there's a new device attached: `echo hd44780 0x27 > /sys/class/i2c-adapter/i2c-1/new_device`.
