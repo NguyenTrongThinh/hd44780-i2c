@@ -289,6 +289,14 @@ static int hd44780_remove(struct i2c_client *client)
 	
 	return 0;
 }
+static const struct of_device_id hd44780_of_match[] = {
+	{
+		.compatible = "hitachi,hd44780",
+	},
+	{ }
+};
+
+MODULE_DEVICE_TABLE(of, hd44780_of_match);
 
 static const struct i2c_device_id hd44780_id[] = {
 	{ NAME, 0},
@@ -299,6 +307,7 @@ static struct i2c_driver hd44780_driver = {
 	.driver = {
 		.name	= NAME,
 		.owner	= THIS_MODULE,
+		.of_match_table = of_match_ptr(hd44780_of_match),
 	},
 	.probe = hd44780_probe,
 	.remove = hd44780_remove,
