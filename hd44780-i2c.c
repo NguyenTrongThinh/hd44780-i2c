@@ -212,7 +212,7 @@ static int hd44780_probe(struct i2c_client *client, const struct i2c_device_id *
 		return -ENOMEM;
 	}
 
-	hd44780_init(lcd, hd44780_geometries[0], client);
+	hd44780_init(lcd, hd44780_geometries[1], client);
 
 	spin_lock(&hd44780_list_lock);
 	list_add(&lcd->list, &hd44780_list);
