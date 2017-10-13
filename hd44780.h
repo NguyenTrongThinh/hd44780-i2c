@@ -4,6 +4,9 @@
 #define BUF_SIZE		64
 #define ESC_SEQ_BUF_SIZE	4
 
+#define IOCTL_CLEAR_DISPLAY	0
+#define IOCTL_GOTO_XY		1
+
 struct hd44780_geometry {
 	int cols;
 	int rows;
@@ -39,6 +42,11 @@ struct hd44780 {
 	struct list_head list;
 };
 
+struct ioctl_mesg{				
+	int x;
+	int y;
+};
+
 void hd44780_write(struct hd44780 *, const char *, size_t);
 void hd44780_init_lcd(struct hd44780 *);
 void hd44780_print(struct hd44780 *, const char *);
@@ -47,6 +55,8 @@ void hd44780_set_geometry(struct hd44780 *, struct hd44780_geometry *);
 void hd44780_set_backlight(struct hd44780 *, bool);
 void hd44780_set_cursor_blink(struct hd44780 *, bool);
 void hd44780_set_cursor_display(struct hd44780 *, bool);
+void hd44780_clear_display(struct hd44780 *lcd);
+void hd44780_goto_xy(struct hd44780 *lcd, int x, int y);
 
 extern struct hd44780_geometry *hd44780_geometries[];
 #endif

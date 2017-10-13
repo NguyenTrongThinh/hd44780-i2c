@@ -175,6 +175,39 @@ static ssize_t hd44780_file_write(struct file *filp, const char __user *buf, siz
 	return n;
 }
 
+
+static long hd44780_file_ioctl( struct file *filp, unsigned int ioctl_command, unsigned long arg)
+{
+	struct ioctl_mesg ioctl_arguments;
+	struct hd44780 *lcd = filp->private_data;
+	if( ((const void *)arg) == NULL){
+		printk( KERN_DEBUG "ERR: Invalid argument for klcd IOCTL \n");
+		return -EINVAL;
+	}
+
+	if( copy_from_user( &ioctl_arguments, (const void *)arg, sizeof(ioctl_arguments) ) ){
+		printk( KERN_DEBUG "ERR: Failed to copy from user space buffer \n" );
+		return -EFAULT;
+	}
+
+	switch( (char) ioctl_command ){
+		case IOCTL_CLEAR_DISPLAY:
+			hd44780_clear_display(lcd);
+			break;
+
+		case IOCTL_GOTO_XY:
+			hd44780_goto_xy(lcd, ioctl_arguments.x, ioctl_arguments.y);
+			break;
+
+		default:
+			printk(KERN_DEBUG "klcd Driver (ioctl): No such command \n");
+			return -ENOTTY;
+	}
+	
+	return 0;
+}
+
+
 static void hd44780_init(struct hd44780 *lcd, struct hd44780_geometry *geometry,
 		struct i2c_client *i2c_client)
 {
@@ -195,6 +228,7 @@ static struct file_operations fops = {
 	.open = hd44780_file_open,
 	.release = hd44780_file_release,
 	.write = hd44780_file_write,
+	.unlocked_ioctl	= hd44780_file_ioctl,
 };
 
 static int hd44780_probe(struct i2c_client *client, const struct i2c_device_id *id)
