@@ -166,7 +166,7 @@ void hd44780_clear_display(struct hd44780 *lcd)
 void hd44780_goto_xy(struct hd44780 *lcd, int x, int y)
 {
 	u8 Address = 0;
-	Address = 64*(y-1) + (x+1) + 0x80;
+	Address = 64*y + x + 0x80;
 	hd44780_write_instruction(lcd, Address);
 
 	/* Wait for 1.64 ms because this one needs more time */
