@@ -56,7 +56,7 @@ void hd44780_set_backlight(struct hd44780 *, bool);
 void hd44780_set_cursor_blink(struct hd44780 *, bool);
 void hd44780_set_cursor_display(struct hd44780 *, bool);
 void hd44780_clear_display(struct hd44780 *lcd);
-void hd44780_goto_xy(struct hd44780 *lcd, struct *lcdpos);
+void hd44780_goto_xy(struct hd44780 *lcd, struct lcdpos *position);
 
 extern struct hd44780_geometry *hd44780_geometries[];
 #endif

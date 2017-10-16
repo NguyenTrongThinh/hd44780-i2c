@@ -190,7 +190,7 @@ static long hd44780_file_ioctl( struct file *filp, unsigned int ioctl_command, u
 			break;
 
 		case IOCTL_GOTO_XY:
-			if( copy_from_user( &lcdPos, (const void *)arg, sizeof(lcdpos) ) ){
+			if( copy_from_user( &lcdPos, (const void *)arg, sizeof(lcdPos) ) ){
 				printk( KERN_DEBUG "ERR: Failed to copy from user space buffer \n" );
 				return -EFAULT;
 			}
@@ -271,9 +271,13 @@ static int hd44780_probe(struct i2c_client *client, const struct i2c_device_id *
 
 	hd44780_init_lcd(lcd);
 
-	hd44780_print(lcd, "/dev/");
-	hd44780_print(lcd, device->kobj.name);
-	lcd->dirty = true;
+	//hd44780_print(lcd, "/dev/");
+	//hd44780_print(lcd, device->kobj.name);
+	hd44780_clear_display(lcd);
+	hd44780_set_cursor_blink(lcd, false);
+	hd44780_set_cursor_display(lcd, false);
+	hd44780_print(lcd, "nanopi NEO v1.2");
+	lcd->dirty = false;
 	
 	return 0;
 

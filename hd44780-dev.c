@@ -163,23 +163,23 @@ void hd44780_clear_display(struct hd44780 *lcd)
 	lcd->pos.row = 0;
 	lcd->pos.col = 0;
 }
-void hd44780_goto_xy(struct hd44780 *lcd, struct *lcdpos)
+void hd44780_goto_xy(struct hd44780 *lcd, struct lcdpos *position)
 {
 	u8 Address = 0;
-	if (lcdpos->row >= 0 && lcdpos->row <= 1)
+	if (position->row >= 0 && position->row <= 1)
 	{
-		Address = 64*lcdpos->row + lcdpos->col + 0x80; //if row = 0 or row = 1
+		Address = 64*position->row + position->col + 0x80; //if row = 0 or row = 1
 	}
-	else if (lcdpos->row >= 2 && lcdpos->row <= 3)
+	else if (position->row >= 2 && position->row <= 3)
 	{
-		Address = 64*(lcdpos->row - 2) + (lcdpos->col + 0x14) + 0x80;
+		Address = 64*(position->row - 2) + (position->col + 0x14) + 0x80;
 	}
 	hd44780_write_instruction(lcd, Address);
 
 	/* Wait for 1.64 ms because this one needs more time */
 	udelay(1640);
-	lcd->pos.row = lcdpos->row;
-	lcd->pos.col = lcdpos->col;
+	lcd->pos.row = position->row;
+	lcd->pos.col = position->col;
 }
 
 static void hd44780_clear_line(struct hd44780 *lcd)
@@ -320,7 +320,7 @@ void hd44780_set_geometry(struct hd44780 *lcd, struct hd44780_geometry *geo)
 {
 	lcd->geometry = geo;
 
-	if (lcd->is_in_esc_seq);
+	if (lcd->is_in_esc_seq)
 		hd44780_leave_esc_seq(lcd);
 
 	hd44780_clear_display(lcd);
