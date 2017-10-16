@@ -25,10 +25,11 @@ Device attributes exported via sysfs (`/sys/class/hd44780/<device_name>`):
 * `cursor_display` - displays or hides cursor. Possible values: `0`, `1`
 
 ### Device tree modification
-`&i2c0 { <br />
+
+&i2c0 { <br />
 	status = "okay"; <br />
 	hd44780@27 { <br />
 			compatible = "hitachi,hd44780"; <br />
 			reg = <0x27>; <br />
 	}; <br />
-};<br />`
+};<br />
