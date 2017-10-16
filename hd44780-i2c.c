@@ -178,25 +178,23 @@ static ssize_t hd44780_file_write(struct file *filp, const char __user *buf, siz
 
 static long hd44780_file_ioctl( struct file *filp, unsigned int ioctl_command, unsigned long arg)
 {
-	struct ioctl_mesg ioctl_arguments;
+	struct lcdpos lcdPos;
 	struct hd44780 *lcd = filp->private_data;
-	if( ((const void *)arg) == NULL){
-		printk( KERN_DEBUG "ERR: Invalid argument for klcd IOCTL \n");
-		return -EINVAL;
+	if( ((const void *)arg) == NULL)
+	{
+		printk( KERN_DEBUG "Receive NULL ARG \n");
 	}
-
-	if( copy_from_user( &ioctl_arguments, (const void *)arg, sizeof(ioctl_arguments) ) ){
-		printk( KERN_DEBUG "ERR: Failed to copy from user space buffer \n" );
-		return -EFAULT;
-	}
-
 	switch( (char) ioctl_command ){
 		case IOCTL_CLEAR_DISPLAY:
 			hd44780_clear_display(lcd);
 			break;
 
 		case IOCTL_GOTO_XY:
-			hd44780_goto_xy(lcd, ioctl_arguments.x, ioctl_arguments.y);
+			if( copy_from_user( &lcdPos, (const void *)arg, sizeof(lcdpos) ) ){
+				printk( KERN_DEBUG "ERR: Failed to copy from user space buffer \n" );
+				return -EFAULT;
+			}
+			hd44780_goto_xy(lcd, &lcdPos);
 			break;
 
 		default:

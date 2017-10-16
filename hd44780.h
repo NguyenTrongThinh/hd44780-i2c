@@ -42,9 +42,9 @@ struct hd44780 {
 	struct list_head list;
 };
 
-struct ioctl_mesg{				
-	int x;
-	int y;
+struct lcdpos{				
+	int col;
+	int row;
 };
 
 void hd44780_write(struct hd44780 *, const char *, size_t);
@@ -56,7 +56,7 @@ void hd44780_set_backlight(struct hd44780 *, bool);
 void hd44780_set_cursor_blink(struct hd44780 *, bool);
 void hd44780_set_cursor_display(struct hd44780 *, bool);
 void hd44780_clear_display(struct hd44780 *lcd);
-void hd44780_goto_xy(struct hd44780 *lcd, int x, int y);
+void hd44780_goto_xy(struct hd44780 *lcd, struct *lcdpos);
 
 extern struct hd44780_geometry *hd44780_geometries[];
 #endif

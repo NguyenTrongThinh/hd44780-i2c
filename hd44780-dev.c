@@ -163,16 +163,16 @@ void hd44780_clear_display(struct hd44780 *lcd)
 	lcd->pos.row = 0;
 	lcd->pos.col = 0;
 }
-void hd44780_goto_xy(struct hd44780 *lcd, int col, int row)
+void hd44780_goto_xy(struct hd44780 *lcd, struct *lcdpos)
 {
 	u8 Address = 0;
-	Address = 64*row + col + 0x80;
+	Address = 64*lcdpos->row + lcdpos->col + 0x80;
 	hd44780_write_instruction(lcd, Address);
 
 	/* Wait for 1.64 ms because this one needs more time */
 	udelay(1640);
-	lcd->pos.row = row;
-	lcd->pos.col = col;
+	lcd->pos.row = lcdpos->row;
+	lcd->pos.col = lcdpos->col;
 }
 static void hd44780_clear_line(struct hd44780 *lcd)
 {
